@@ -1,0 +1,26 @@
+class LinearRegression:
+    def __init__(self, learning_rate, epochs):
+        self.lr=learning_rate
+        self.epochs=epochs
+
+    def fit(self, X_train, y_train):
+        n_samples, n_features = X_train.shape
+        y_train=y_train.reshape(-1,1)
+        # init parameters
+        self.weights = np.zeros((n_features,1))
+        self.bias = np.zeros((1,1))
+
+        # gradient descent
+        for i in range(self.epochs):
+            delta= -(y_train-np.dot(X_train,self.weights)-self.bias)/n_samples
+            dw= np.dot(X_train.T,delta)
+            db= np.sum(delta).reshape(1,1)
+
+            #update weights and biases
+            self.weights-= self.lr * dw
+            self.bias-= self.lr* db
+
+    def predict(self, X_test):
+        y_predicted = np.dot(X_test,self.weights)+self.bias
+        print(self.weights, self.bias)
+        return y_predicted
